@@ -1,1 +1,3 @@
-# Capstone
+# Capstone Overview
+
+The primary code used for data preparation and analysis for my MSc in Data Analysis capstone project. The project included the use of disparate datasets from a micro-enterprise to answer business questions and explore the utility of data gathered by extremely small companies with less than rigorous data processes. The case study includes a manufacturing company that produces sheepskin products which are sold through both wholesale and retail channels. The data includes a transaction dataset sourced from Quickbooks and a shipping dataset sourced from a shipping website used by the business. Data cleanliness is a major issue due to the fact that the business owner has more than one business it uses the shipping website for as well as general inconsistencies in how products and sales are tracked across the two platforms. 
