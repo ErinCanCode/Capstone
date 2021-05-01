@@ -1,0 +1,101 @@
+#Install necessary packages
+pacman::p_load(arules, arulesViz)
+setwd("C:/Users/Erin/Documents/Masters Program/R Directories")
+JMSWSDATA <- read.csv("JMS_WS_TRANS.csv")
+JMSWSDATA[is.na(JMSWSDATA)] <- 0
+
+#Review data
+View(JMSWSDATA)
+dim(JMSWSDATA)
+str(JMSWSDATA)
+
+#Removes transaction ID as no longer applicable
+jmsdataws.wide2 = subset(JMSWSDATA, select = -c(1,2))
+View(jmsdataws.wide2)
+str(jmsdataws.wide2)
+
+jms.matws <- as.matrix(jmsdataws.wide2)
+
+jmstrns.ws = as(jms.matws, "transactions")
+
+#Create association rules
+
+rules.ws <- apriori(jmstrns.ws, parameter = list(supp = 0.025, 
+                                                         conf = 0.5, 
+                                                         maxlen = 10, 
+                                                         target = "rules"))
+
+#Inspect the top 10 rules
+inspect(head(sort(rules.ws, by = "lift"), n = 10))
+
+#Limit rules those with lift above 2.5
+ws.subrules <- sort(subset(rules.ws, lift > 2.5), by = "lift")
+
+inspect(sort(ws.subrules, by = "lift"))
+
+#Matrix of top Rules
+plot(ws.subrules, method = "matrix", measure = "lift")
+
+#Matrix of top 10 Rules
+plot(ws.subrules[1:10], method = "matrix", measure = "lift")
+
+#Graph of top 10 rules
+plot(ws.subrules[1:10], method = "graph", measure = "lift")
+
+#Scatterplot of top 50 rules
+plot(ws.subrules, jitter = 0)
+
+#Scatterplot of all rules
+plot(rules.ws, jitter = 0)
+
+
+
+#Create MBA for Retail dataset
+JMSRETDATA <- read.csv("JMS_RET_TRANS.csv")
+JMSRETDATA[is.na(JMSRETDATA)] <- 0
+
+#Review data
+View(JMSRETDATA)
+dim(JMSRETDATA)
+str(JMSRETDATA)
+
+#Removes transaction ID as no longer applicable
+jmsdataRET.wide2 = subset(JMSRETDATA, select = -c(1,2))
+View(jmsdataRET.wide2)
+str(jmsdataRET.wide2)
+
+jms.matRET <- as.matrix(jmsdataRET.wide2)
+
+jmstrns.ret = as(jms.matRET, "transactions")
+
+#Create association rules
+
+rules.ret <- apriori(jmstrns.ret, parameter = list(supp = 0.5, 
+                                                 conf = 0.5, 
+                                                 maxlen = 10, 
+                                                 target = "rules"))
+
+#Inspect the top 10 rules
+inspect(head(sort(rules.ret, by = "lift"), n = 10))
+
+#Limit rules those with lift above 2.5
+ret.subrules <- sort(subset(rules.ret, lift > 1), by = "lift")
+
+inspect(sort(ret.subrules, by = "lift"))
+
+#Matrix of top Rules
+plot(ret.subrules, method = "matrix", measure = "lift")
+
+#Matrix of top 10 Rules
+plot(ret.subrules[1:10], method = "matrix", measure = "lift")
+
+#Graph of top 10 rules
+plot(ret.subrules[1:10], method = "graph", measure = "lift")
+
+#Scatterplot of top 50 rules
+plot(ret.subrules, jitter = 0)
+
+#Scatterplot of all rules
+plot(rules.ret, jitter = 0)
+
+
